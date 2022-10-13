@@ -1,0 +1,17 @@
+{%extends 'main.html'%}
+{%block title%}Authors{%endblock title%}
+{%block content%}
+{%for author in authors%}
+<div class="author">
+<h1>{{author.name}}</h1>
+<div class="socialmedia">
+<a href="http://twitter.com/{{author.twitter}}"><img src="/media/uploads/twitter.PNG" height="20" width="20"></a>
+<a href="http://youtube.com/{{author.youtube}}"><img src="/media/uploads/youtube.PNG" height="20" width="20"></a>
+<a href="http://facebook.com/{{author.facebook}}"><img src="/media/uploads/facebook.PNG" height="20" width="20"></a>
+</div>
+<p><img src={{author.pic}} width="150" height="200"></p>
+<p>{{author.bio}}</p>
+</div>
+
+{%endfor%}
+{%endblock content%}

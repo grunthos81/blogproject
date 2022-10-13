@@ -1,0 +1,35 @@
+{%extends 'main.html'%}
+{%block title%}{{article.title}}{%endblock title%}
+{%block content%}
+<div class="singlearticle">
+<h1>{{article.title}}</h1>
+<p>{{article.author}} | last edited: {{article.last_edited}}</p>
+{%autoescape off%}
+{{article.text}}
+{%endautoescape%}
+</div>
+<hr>
+<div class="commentsection">
+<h3>Here's the dregs of humanity giving their worthless opinions.</h3>
+{%for comment in comments%}
+<div class="comment">
+<p><strong>{{comment.user.username}} | {{comment.timepublished}}</strong></p>
+<p>{{comment.comment}}</p>
+</div>
+{%endfor%}
+
+
+{% if user.is_authenticated %}
+<p>Want to add to this fucking cesspit of bile? Be my fucking guest:</p>
+<form method="post" action="">
+    {{form.comment}}
+    <input type="hidden" value="{{article}}">
+    <input type="hidden" value="{{request.user}}">
+    <input type="submit" value="submit"/>
+    {%csrf_token%}
+</form>
+{%else%}
+<p>You must be logged in to comment.</p>
+{%endif%}
+</div>
+{%endblock content%}

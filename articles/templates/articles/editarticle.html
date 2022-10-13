@@ -1,0 +1,17 @@
+{%extends 'main.html'%}
+{%block title%}Edit Article{%endblock title%}
+{%block content%}
+<h1>Edit Article</h1>
+<form method="post" action="">
+    {%csrf_token%}
+    <table>
+        {{article.media}}
+        {{article.as_table}}
+        <tr>
+            <td><input type='submit' value='Save'></td>
+            <td>Image preview: <img src="{{article.image.value}}" height="300" width="400"></td>
+            
+        </tr>
+    </table>
+</form>
+{%endblock content%}

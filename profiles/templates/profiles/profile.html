@@ -1,0 +1,48 @@
+{%extends 'main.html'%}
+{%block title%}Your Profile{%endblock title%}
+{%block content%}
+<h1>Your Profile</h1>
+{% if articles != "No articles"%}
+<h2>Your Articles:</h2>
+<p><a href="/articles/newarticle">Create new article here</a></p>
+<table>
+<tr>
+<th>Title</th>
+<th>Published?</th>
+<th>Last Edited</th>
+<th>Edit</th>
+</tr>
+{%for article in articles%}
+<tr>
+    <td>{{article.title}}</td>
+    <td>{%if article.published%}
+        Yes
+        {%else%}
+        No
+        {%endif%}
+    </td>
+    <td>{{article.last_edited}}</td>
+    <td><a href='/articles/editarticle{{article.permalink}}'>Edit this article</a></td>
+</tr>
+{%endfor%}
+</table>
+{%else%}
+<h2>{{content.article}}</h2>
+{%endif%}
+
+<h2>Your Comments:</h2>
+<table>
+<tr>
+    <th>Article</th>
+    <th>Comment</th>
+    <th>Date Submitted</th>
+</tr>
+{%for comment in comments%}
+<tr>
+    <td><a href='/articles{{comment.article.permalink}}'>{{comment.article.title}}</a></td>
+    <td>{{comment.comment|truncatechars:70}}</td>
+    <td>{{comment.timepublished}}</td>
+</tr>
+{%endfor%}
+</table>
+{%endblock content%}

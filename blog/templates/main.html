@@ -1,0 +1,29 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="{%static 'main.css'%}" rel="stylesheet" type="text/css">
+        <title>{%block title%}Thought Droppings{%endblock title%}</title>
+    </head>
+    <body>
+        <div id="navbar">
+            <ul>
+                <li class="title"><a href='/'>Thought<br>Droppings</a></li>
+                <li class="section"><a href='/articles/section/bible'>Bible</a></li>
+                <li class="section"><a href='/articles/section/travel'>Travel</a></li>
+                <li class="section"><a href='/articles/section/coding'>Coding</a></li>
+                <li class="section"><a href='/authors/'>Meet The Authors</a></li>
+                <li class="auth">
+                    {% if user.is_authenticated%}
+                    <h5>Hello, {{user.username}}. <a href="/profile/">View Profile</a> or <a href="{%url 'logout'%}?next=/">Log out.</a></h5>
+                    {%else%}
+                    <h5><a href="{%url 'login'%}?next=/">Log in here.</a></h5>
+                    {%endif%}
+                </li>
+            </ul>
+        </div>
+        {%block content%}
+        {%endblock content%}
+    </body>
+</html>

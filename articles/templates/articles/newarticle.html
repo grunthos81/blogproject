@@ -1,0 +1,20 @@
+{%extends 'main.html'%}
+{%block title%}New Article{%endblock title%}
+{%block content%}
+<h1>New Article</h1>
+<form method="post" action="" enctype="multipart/form-data">
+    {%csrf_token%}
+    <table>
+        {{articleform.media}}
+        {{articleform.as_table}}
+        {{imagesform.management_form}}
+        {% for form in imagesform%}
+        {{form}}
+        {%endfor%}
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type='submit' value='Save'></td>
+        </tr>
+    </table>
+</form>
+{%endblock content%}

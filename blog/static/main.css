@@ -1,0 +1,72 @@
+h1, h2, h3, h4, h5, h6, p, a, th, td{
+    font-family: 'Helvetica', serif;
+    color: #032508
+  }
+
+
+body{
+    color: #032508;
+}
+
+li{
+    display: inline-block;
+    margin-left: 2em;
+}
+
+a{
+    text-decoration: none;
+    transition-duration: 1s;
+    transition-property: background-color;
+}
+
+a:hover{
+    background-color: #d6f5da;
+}
+
+.section{
+    font-size: 1.3em;
+}
+
+.title{
+    font-family: fantasy;
+    font-size: 1.8em;
+}
+
+.articlethumbnail, .author{
+    
+    box-shadow: 5px 5px 15px 5px #032508;
+    transition-duration: 1s;
+    transition-property: box-shadow;
+    width: 30%;
+    float: left;
+    margin-left: 1em;
+    padding-left: 0.2em;
+    padding-bottom: 2em;
+    margin-bottom: 1em;
+    display: grid
+
+}
+
+.articlethumbnail:hover{
+    box-shadow: 5px 5px 15px 5px #0daa25;
+}
+
+.singlearticle{
+    width: 80%;
+    padding-left: 5em;
+}
+
+.comment{
+    margin-left: 5em;
+    border-bottom: thick solid #c5f1cb;
+}
+
+td, th{
+    width: 8%;
+    border: thin solid #c5f1cb;
+    text-align: left;
+}
+
+.socialmedia{
+    display: inline-block;
+}
