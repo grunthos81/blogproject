@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect
 from datetime import datetime
 from authors.models import Author
 from django.views import View
+from django.urls import reverse_lazy
+from re import sub
 
 class getSection(View):
     def get(self, request, section):
@@ -37,35 +39,34 @@ class EditArticle(View):
 
 
 class NewArticleView(View):
+
     def get(self, request):
         try:
             if Author.objects.filter(userid = self.request.user).exists():
-                aform = ArticleForm(request.GET)
+                aform  = ArticleForm(request.GET)
                 return render(request, 'articles/newarticle.html', {'aform' : aform})
             else:
-                messages.warning(request, 'You are not an author. Bugger off.')
-                return HttpResponseRedirect('/')
-
+                messages.warning(request, 'You are not an author, bugger off.')
+                return HttpResponseRedirect(reverse_lazy('home'))
         except TypeError:
             messages.warning(request, 'You are not logged in.')
-            return HttpResponseRedirect(self.request.path_info)
+            return HttpResponseRedirect(reverse_lazy('home'))
     
     def post(self, request):
-        current_author = Author.objects.get(userid = self.request.user)
+        author = Author.objects.get(userid = self.request.user)
         aform = ArticleForm(request.POST)
         if aform.is_valid():
             title = aform.cleaned_data['title']
             permalink = re.sub(r'[^a-zA-Z\d]', '', str(title))
-            Article.objects.create(title = title, permalink = permalink,
-            author = current_author, text = aform.cleaned_data['text'], 
-            section = aform.cleaned_data['section'], published= aform.cleaned_data['published'], 
-            last_edited = datetime.now(), 
-            image = aform.cleaned_data['image'])
+            Article.objects.create(title = title, permalink = permalink, 
+            section = aform.cleaned_data['section'], text = aform.cleaned_data['text'], 
+            author = author, last_edited = datetime.now(), 
+            published = aform.cleaned_data['published'], image = aform.cleaned_data['image'])
             messages.warning(request, 'Article created successfully.')
-            return HttpResponseRedirect(self.request.path_info)
+            return HttpResponseRedirect(reverse_lazy('home'))
         else:
             messages.warning(request, aform.errors)
-            return HttpResponseRedirect(self.request.path_info)
+            return HttpResponseRedirect(reverse_lazy('home'))
 
 class ViewArticle(View):
     def get(self, request, pagename):
