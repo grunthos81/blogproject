@@ -1,20 +1,23 @@
 {%extends 'main.html'%}
 {%block title%}New Article{%endblock title%}
 {%block content%}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <h1>New Article</h1>
-<form method="post" action="" enctype="multipart/form-data">
+<form method="post" action="">
     {%csrf_token%}
     <table>
-        {{articleform.media}}
-        {{articleform.as_table}}
-        {{imagesform.management_form}}
-        {% for form in imagesform%}
-        {{form}}
-        {%endfor%}
-        <tr>
-            <td>&nbsp;</td>
-            <td><input type='submit' value='Save'></td>
-        </tr>
+        {{aform.media}}
+        {{aform.as_table}}
     </table>
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" value="Save"></td>
+    </tr>
 </form>
 {%endblock content%}
