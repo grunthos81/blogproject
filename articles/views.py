@@ -36,33 +36,36 @@ class EditArticle(View):
             return render(request, 'articles/message.html', {'message' : "something went wrong."})
 
 
-class NewArticle(View):
-
+class NewArticleView(View):
     def get(self, request):
         try:
             if Author.objects.filter(userid = self.request.user).exists():
-                article_form = ArticleForm(request.GET)
-                return render(request, 'articles/newarticle.html', {'articleform' : article_form})
+                aform = ArticleForm(request.GET)
+                return render(request, 'articles/newarticle.html', {'aform' : aform})
             else:
-                return render(request, 'articles/message.html', {'message':'You are not an author. Go away.'})
-        except TypeError:
-            return render(request, 'articles/message.html', {'message' : 'You are not logged in.'})
+                messages.warning(request, 'You are not an author. Bugger off.')
+                return HttpResponseRedirect('/')
 
+        except TypeError:
+            messages.warning(request, 'You are not logged in.')
+            return HttpResponseRedirect(self.request.path_info)
     
     def post(self, request):
         current_author = Author.objects.get(userid = self.request.user)
-        article_form = ArticleForm(request.POST)
-        if article_form.is_valid():
-            Article.objects.create(title=article_form.cleaned_data['title'],
-                                    summary = article_form.cleaned_data['summary'],
-                                    permalink = article_form.cleaned_data['permalink'],
-                                    author = current_author,
-                                    text = article_form.cleaned_data['text'],
-                                    section = article_form.cleaned_data['section'],
-                                    published = article_form.cleaned_data['published'],
-                                    last_edited = datetime.now(),
-                                    image = article_form.cleaned_data['image'],)
-            return render(request, 'articles/message.html', {'message' : 'Article added successfully.'})
+        aform = ArticleForm(request.POST)
+        if aform.is_valid():
+            title = aform.cleaned_data['title']
+            permalink = re.sub(r'[^a-zA-Z\d]', '', str(title))
+            Article.objects.create(title = title, permalink = permalink,
+            author = current_author, text = aform.cleaned_data['text'], 
+            section = aform.cleaned_data['section'], published= aform.cleaned_data['published'], 
+            last_edited = datetime.now(), 
+            image = aform.cleaned_data['image'])
+            messages.warning(request, 'Article created successfully.')
+            return HttpResponseRedirect(self.request.path_info)
+        else:
+            messages.warning(request, aform.errors)
+            return HttpResponseRedirect(self.request.path_info)
 
 class ViewArticle(View):
     def get(self, request, pagename):
